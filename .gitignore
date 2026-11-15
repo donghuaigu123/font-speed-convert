@@ -1,0 +1,15 @@
+# 构建中间产物（含签名私钥，绝不要提交）
+build/
+*.keystore
+*.jks
+*.p12
+*.idsig
+
+# 编辑器 / 系统
+.DS_Store
+.idea/
+*.iml
+*.swp
+.vscode/
+
+# 注意：根目录的「字体速转-v1.0.apk」是发布的成品安装包，需要提交到仓库与 Release

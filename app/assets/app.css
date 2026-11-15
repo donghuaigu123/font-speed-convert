@@ -1,0 +1,177 @@
+:root{
+  --paper:#f6f0e4;
+  --card:#fffcf5;
+  --ink:#2b2622;
+  --ink-2:#6d6257;
+  --red:#9e2b25;
+  --red-soft:#b4483d;
+  --gold:#b08d57;
+  --line:#e3d9c6;
+  --shadow:0 2px 10px rgba(90,70,45,.07);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%;overflow:hidden}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  font-size:15px;line-height:1.55;
+  -webkit-text-size-adjust:100%;
+}
+button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+
+.app{position:absolute;inset:0;display:flex;flex-direction:column}
+.topbar{
+  flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+  gap:10px;padding:14px 16px 12px;
+  background:linear-gradient(160deg,#9e2b25 0%,#7f211c 100%);
+  color:#fff8ee;box-shadow:0 2px 12px rgba(120,30,25,.22);
+  padding-top:calc(14px + env(safe-area-inset-top));
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.seal-mini{
+  width:40px;height:40px;flex:0 0 40px;border-radius:7px;
+  background:#fff4e2;color:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-size:25px;font-weight:700;font-family:serif;
+  box-shadow:inset 0 0 0 2px rgba(158,43,37,.35);
+}
+.brand-txt{min-width:0}
+.brand-txt h1{margin:0;font-size:19px;letter-spacing:3px;font-weight:700;line-height:1.2}
+.brand-txt p{margin:2px 0 0;font-size:11px;opacity:.82;letter-spacing:.5px;white-space:nowrap}
+.ghost-btn{
+  flex:0 0 auto;font-size:12px;padding:7px 11px;border-radius:20px;
+  border:1px solid rgba(255,244,226,.55);color:#fff4e2;background:rgba(255,255,255,.09);
+}
+.ghost-btn:active{background:rgba(255,255,255,.24)}
+
+.scroll{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 8px}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:14px;margin-bottom:12px;box-shadow:var(--shadow);
+}
+.step-head{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.step-no{
+  width:22px;height:22px;flex:0 0 22px;border-radius:50%;
+  background:var(--red);color:#fff;font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.step-head h2{margin:0;font-size:15px;font-weight:700;letter-spacing:1px;flex:1}
+.hint{font-size:11.5px;color:var(--ink-2)}
+.link{font-size:12px;color:var(--red);padding:4px 2px}
+.link:active{opacity:.6}
+.row-between{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+
+textarea,input[type=text]{
+  width:100%;border:1px solid var(--line);background:#fffdf8;border-radius:10px;
+  padding:11px 12px;outline:none;resize:vertical;line-height:1.7;
+}
+textarea:focus,input[type=text]:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(176,141,87,.13)}
+textarea::placeholder,input::placeholder{color:#a79c8b}
+input[type=text]{padding:9px 12px;resize:none}
+
+.font-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.font-card{
+  position:relative;border:1.5px solid var(--line);border-radius:11px;
+  background:#fffdf7;padding:9px 5px 8px;text-align:center;overflow:hidden;
+  transition:border-color .15s,background .15s;
+}
+.font-card:active{transform:scale(.97)}
+.font-card.on{border-color:var(--red);background:#fff4ec;box-shadow:0 0 0 2px rgba(158,43,37,.1)}
+.font-card.off{opacity:.4}
+.font-sample{
+  height:52px;display:flex;align-items:center;justify-content:center;
+  font-size:34px;line-height:1;color:var(--ink);white-space:nowrap;
+}
+.font-name{font-size:13px;font-weight:700;letter-spacing:1px;margin-top:3px}
+.font-desc{font-size:10px;color:var(--ink-2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.font-badge{
+  position:absolute;top:4px;right:4px;font-size:8.5px;padding:1px 4px;
+  border-radius:4px;background:#efe4cf;color:#8a6a35;
+}
+.font-card.on .font-badge{background:var(--red);color:#fff}
+.font-card.user .font-badge{background:#4a7c59;color:#fff}
+
+.notice{font-size:11px;color:var(--ink-2);margin:10px 2px 0;line-height:1.6}
+
+.field{margin-bottom:12px}
+.field:last-child{margin-bottom:0}
+.field>label{display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{
+  padding:7px 13px;border-radius:20px;border:1px solid var(--line);
+  background:#fffdf8;font-size:12.5px;color:var(--ink-2);
+}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff;font-weight:600}
+.chip .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px;border:1px solid rgba(0,0,0,.1)}
+
+.adv{border-top:1px dashed var(--line);padding-top:13px;margin-top:13px}
+.hidden{display:none !important}
+input[type=range]{width:100%;accent-color:var(--red);margin:2px 0 4px}
+.switches{display:flex;flex-wrap:wrap;gap:9px 16px}
+.sw{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:400 !important;margin:0 !important}
+.sw input{width:17px;height:17px;accent-color:var(--red)}
+
+.tip{
+  font-size:11.5px;color:#7a6a52;background:#f0e7d4;border:1px solid #e0d2b4;
+  border-radius:10px;padding:10px 12px;line-height:1.7;margin:2px 0 12px;
+}
+.tip b{color:var(--red)}
+.credits{font-size:10.5px;color:#9b9080;line-height:1.7;padding:0 4px 14px}
+
+.actionbar{
+  flex:0 0 auto;padding:10px 14px calc(12px + env(safe-area-inset-bottom));
+  background:rgba(246,240,228,.96);border-top:1px solid var(--line);
+}
+.btn-primary{
+  width:100%;padding:14px;border-radius:12px;color:#fff8ec;font-size:16px;
+  font-weight:700;letter-spacing:2px;
+  background:linear-gradient(160deg,#b03a30 0%,#8e241f 100%);
+  box-shadow:0 4px 12px rgba(142,36,31,.25);
+}
+.btn-primary:active{transform:translateY(1px);box-shadow:0 2px 6px rgba(142,36,31,.25)}
+.btn-primary:disabled{opacity:.55}
+
+.result-layer{position:absolute;inset:0;background:#efe7d7;display:flex;flex-direction:column;z-index:20}
+.result-head{
+  flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:12px 14px;
+  background:#fffaf0;border-bottom:1px solid var(--line);
+  padding-top:calc(12px + env(safe-area-inset-top));
+}
+.back-btn{font-size:14px;color:var(--red);padding:5px 8px 5px 0;font-weight:600}
+.result-info{flex:1;text-align:center;font-size:12.5px;color:var(--ink-2)}
+.result-scroll{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.result-scroll img{
+  width:100%;max-width:520px;height:auto;display:block;
+  border-radius:4px;box-shadow:0 6px 22px rgba(70,50,30,.24);background:#fff;
+}
+.page-label{font-size:11px;color:var(--ink-2);letter-spacing:1px}
+.result-actions{
+  flex:0 0 auto;padding:10px 14px calc(12px + env(safe-area-inset-bottom));
+  background:#fffaf0;border-top:1px solid var(--line);
+}
+.save-hint{font-size:11px;color:var(--ink-2);text-align:center;margin:7px 0 0;line-height:1.6;word-break:break-all}
+
+.toast{
+  position:fixed;left:50%;bottom:88px;transform:translate(-50%,12px);
+  max-width:80%;background:rgba(43,38,34,.93);color:#fff6e8;
+  padding:10px 16px;border-radius:22px;font-size:13px;line-height:1.5;
+  opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;z-index:99;text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* 字体预览：用真实字体渲染 */
+@font-face{font-family:FS-Kai;src:url('fonts/MaShanZheng.ttf')}
+@font-face{font-family:FS-Xing;src:url('fonts/ZhiMangXing.ttf')}
+@font-face{font-family:FS-Cao;src:url('fonts/LiuJianMaoCao.ttf')}
+@font-face{font-family:FS-XingKai;src:url('fonts/LongCang.ttf')}
+@font-face{font-family:FS-WeiBei;src:url('fonts/ZCOOLXiaoWei.ttf')}
+@font-face{font-family:FS-KuaiLe;src:url('fonts/ZCOOLKuaiLe.ttf')}
+.f-kai{font-family:FS-Kai,serif}
+.f-xing{font-family:FS-Xing,serif}
+.f-cao{font-family:FS-Cao,serif}
+.f-xingkai{font-family:FS-XingKai,serif}
+.f-weibei{font-family:FS-WeiBei,serif}
+.f-kuaile{font-family:FS-KuaiLe,serif}
+.f-song{font-family:serif}
+.f-hei{font-family:sans-serif}
