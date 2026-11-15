@@ -6,14 +6,14 @@
 # 用法：
 #   export ANDROID_HOME=/path/to/android-sdk
 #   ./build.sh
-# 产物：./字体速转-v1.0.apk
+# 产物：./字体速转-v1.1.apk
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 APP="$ROOT/app"
 BUILD="$ROOT/build"
-OUT="$ROOT/字体速转-v1.0.apk"
+OUT="$ROOT/字体速转-v1.1.apk"
 
 ANDROID_HOME="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$ROOT/.android-sdk}}"
 BT_VERSION="${BT_VERSION:-34.0.0}"
@@ -46,6 +46,14 @@ open(out, "w", encoding="utf-8").write("\n".join(lines) + "\n")
 print("   内置字体 %d 款，共 %.2f MB" % (len(names), sum(os.path.getsize(os.path.join(d, n)) for n in names) / 1048576))
 PY
 
+# 可选：本机装了 fontTools 就重新生成字库覆盖位图（缺字回退用）。
+# 未安装也不影响构建——仓库已附带生成好的 font-coverage.js。
+if python3 -c "import fontTools" 2>/dev/null; then
+  python3 "$ROOT/scripts/gen_coverage.py" | sed 's/^/   /'
+else
+  echo "   （未安装 fontTools，沿用仓库中已生成的 font-coverage.js）"
+fi
+
 # ---------------------------------------------------------------- 2. 编译资源
 echo "▶ [2/7] aapt2 compile"
 "$BT/aapt2" compile --dir "$APP/res" -o "$BUILD/res.zip"
@@ -60,8 +68,8 @@ echo "▶ [3/7] aapt2 link（打包 assets 与字体）"
   --java "$BUILD/gen" \
   --min-sdk-version 23 \
   --target-sdk-version 34 \
-  --version-code 1 \
-  --version-name "1.0" \
+  --version-code 2 \
+  --version-name "1.1" \
   --auto-add-overlay \
   "$BUILD/res.zip"
 
@@ -112,7 +120,7 @@ echo "✅ 构建完成：$OUT"
 ls -lh "$OUT"
 echo ""
 echo "APK 内容抽查："
-unzip -l "$OUT" | grep -E 'classes\.dex|AndroidManifest\.xml|assets/(index\.html|app\.js|app\.css|fonts\.js)|assets/fonts/' | head -20
+unzip -l "$OUT" | grep -E 'classes\.dex|AndroidManifest\.xml|assets/(index\.html|app\.js|app\.css|fonts\.js|font-coverage\.js)|assets/fonts/' | head -24
 echo ""
 echo "签名信息："
 grep -E 'Verified using|Signer #1 certificate' "$BUILD/verify.txt" | head -5

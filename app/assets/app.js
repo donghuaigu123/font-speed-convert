@@ -7,17 +7,22 @@
 
   // ---------------------------------------------------------------- 字体表
   // real: 真实开源字体；stylized: 基于真实字体的风格化排版（非真篆/隶字库）
+  // src:'seal' 表示字库融合自开源项目「百变印章」，这类字库覆盖有限，
+  //     渲染时会逐字检测缺字并自动回退到楷书（见 hasGlyph / drawOne）。
   var BUILTIN = [
-    { id: 'kai',     name: '楷书',   desc: '端正浑厚 · 颜体风',   family: 'FS-Kai',     cls: 'f-kai',     file: 'MaShanZheng.ttf',   real: true,  sample: '永', verticalDefault: false },
-    { id: 'xing',    name: '行书',   desc: '流畅飘逸 · 羲之风',   family: 'FS-Xing',    cls: 'f-xing',    file: 'ZhiMangXing.ttf',   real: true,  sample: '永', verticalDefault: false },
-    { id: 'cao',     name: '草书',   desc: '纵逸奔放 · 怀素风',   family: 'FS-Cao',     cls: 'f-cao',     file: 'LiuJianMaoCao.ttf', real: true,  sample: '永', verticalDefault: false },
-    { id: 'xingkai', name: '行楷',   desc: '温润秀雅 · 龙藏体',   family: 'FS-XingKai', cls: 'f-xingkai', file: 'LongCang.ttf',      real: true,  sample: '永', verticalDefault: false },
-    { id: 'weibei',  name: '魏碑',   desc: '古拙清丽 · 站酷小薇', family: 'FS-WeiBei',  cls: 'f-weibei',  file: 'ZCOOLXiaoWei.ttf',  real: true,  sample: '永', verticalDefault: false },
-    { id: 'kuaile',  name: '灵动',   desc: '轻松活泼 · 站酷快乐', family: 'FS-KuaiLe',  cls: 'f-kuaile',  file: 'ZCOOLKuaiLe.ttf',   real: true,  sample: '永', verticalDefault: false },
-    { id: 'song',    name: '宋体',   desc: '长篇正文 · 清晰耐读', family: 'serif',      cls: 'f-song',    file: null,                real: true,  sample: '永', verticalDefault: false, system: true },
-    { id: 'hei',     name: '黑体',   desc: '现代简洁 · 系统字体', family: 'sans-serif', cls: 'f-hei',     file: null,                real: true,  sample: '永', verticalDefault: false, system: true },
-    { id: 'lishu',   name: '隶意',   desc: '扁方波磔 · 风格化',   family: 'FS-WeiBei',  cls: 'f-weibei',  file: 'ZCOOLXiaoWei.ttf',  real: false, sample: '永', verticalDefault: false, transform: 'li' },
-    { id: 'zhuan',   name: '篆意',   desc: '圆转竖排 · 风格化',   family: 'FS-Kai',     cls: 'f-kai',     file: 'MaShanZheng.ttf',   real: false, sample: '永', verticalDefault: true,  transform: 'zhuan' }
+    { id: 'kai',        name: '楷书',   desc: '端正浑厚 · 马善政楷书',   family: 'FS-Kai',      cls: 'f-kai',      file: 'MaShanZheng.ttf',   real: true,  sample: '永', verticalDefault: false },
+    { id: 'xing',       name: '行书',   desc: '流畅飘逸 · 志莽行书',     family: 'FS-Xing',     cls: 'f-xing',     file: 'ZhiMangXing.ttf',   real: true,  sample: '永', verticalDefault: false },
+    { id: 'cao',        name: '草书',   desc: '纵逸奔放 · 刘建毛草',     family: 'FS-Cao',      cls: 'f-cao',      file: 'LiuJianMaoCao.ttf', real: true,  sample: '永', verticalDefault: false },
+    { id: 'xingkai',    name: '行楷',   desc: '温润秀雅 · 龙藏行楷',     family: 'FS-XingKai',  cls: 'f-xingkai',  file: 'LongCang.ttf',      real: true,  sample: '永', verticalDefault: false },
+    { id: 'weibei',     name: '魏碑',   desc: '古拙清丽 · 站酷小薇',     family: 'FS-WeiBei',   cls: 'f-weibei',   file: 'ZCOOLXiaoWei.ttf',  real: true,  sample: '永', verticalDefault: false },
+    { id: 'kuaile',     name: '灵动',   desc: '轻松活泼 · 站酷快乐',     family: 'FS-KuaiLe',   cls: 'f-kuaile',   file: 'ZCOOLKuaiLe.ttf',   real: true,  sample: '永', verticalDefault: false },
+    { id: 'lishu',      name: '隶书',   desc: '古隶波磔 · 青柳古隶',     family: 'FS-Lishu',    cls: 'f-lishu',    file: 'lishu.ttf',         real: true,  sample: '永', verticalDefault: false, src: 'seal' },
+    { id: 'zhuan',      name: '篆书',   desc: '说文小篆 · 右起竖排',     family: 'FS-Zhuan',    cls: 'f-zhuan',    file: 'zhuanshu.ttf',      real: true,  sample: '永', verticalDefault: true,  src: 'seal' },
+    { id: 'huangyou',   name: '现代',   desc: '圆润醒目 · 庆科黄油',     family: 'FS-HuangYou', cls: 'f-huangyou', file: 'heiti.ttf',         real: true,  sample: '永', verticalDefault: false, src: 'seal' },
+    { id: 'song',       name: '宋体',   desc: '长篇正文 · 清晰耐读',     family: 'serif',       cls: 'f-song',     file: null,                real: true,  sample: '永', verticalDefault: false, system: true },
+    { id: 'hei',        name: '黑体',   desc: '现代简洁 · 系统字体',     family: 'sans-serif',  cls: 'f-hei',      file: null,                real: true,  sample: '永', verticalDefault: false, system: true },
+    { id: 'li_style',   name: '汉隶风', desc: '扁方波磔 · 风格化版式',   family: 'FS-WeiBei',   cls: 'f-weibei',   file: 'ZCOOLXiaoWei.ttf',  real: false, sample: '永', verticalDefault: false, transform: 'li' },
+    { id: 'zhuan_style',name: '金石风', desc: '圆转竖排 · 风格化版式',   family: 'FS-Kai',      cls: 'f-kai',      file: 'MaShanZheng.ttf',   real: false, sample: '永', verticalDefault: true,  transform: 'zhuan' }
   ];
 
   var THEMES = {
@@ -32,6 +37,44 @@
 
   // 由构建脚本生成：window.FONT_FILES = { "MaShanZheng.ttf": 1, ... }
   var AVAILABLE = window.FONT_FILES || {};
+
+  // ---------------------------------------------------------------- 缺字检测
+  // 复刻开源项目「百变印章」的 Paint.hasGlyph() 逐字回退思路。
+  // 构建时用 fontTools 把字体 cmap 提取成 BMP 覆盖位图（scripts/gen_coverage.py），
+  // 前端 O(1) 查询；字库没有该字时临时改用楷书绘制，整篇不出现方框 / 豆腐块。
+  var COVERAGE_RAW = window.FONT_COVERAGE || {};
+  var COVERAGE = {};
+  Object.keys(COVERAGE_RAW).forEach(function (fam) {
+    var d = COVERAGE_RAW[fam], bmp = null, extra = [];
+    try {
+      var bin = atob(d.bmp);
+      bmp = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bmp[i] = bin.charCodeAt(i);
+    } catch (e) {}
+    String(d.extra || '').split(',').forEach(function (seg) {
+      if (!seg) return;
+      var p = seg.split('-');
+      extra.push([parseInt(p[0], 16), parseInt(p[p.length - 1], 16)]);
+    });
+    COVERAGE[fam] = { bmp: bmp, extra: extra };
+  });
+
+  /** 该字体是否包含 ch 的字形；无覆盖数据时一律返回 true（保持原有行为）。 */
+  function hasGlyph(fam, ch) {
+    var c = COVERAGE[fam];
+    if (!c || !c.bmp) return true;
+    var cp = ch.codePointAt ? ch.codePointAt(0) : ch.charCodeAt(0);
+    if (cp < 0x10000) return !!(c.bmp[cp >> 3] & (1 << (7 - (cp & 7))));
+    for (var i = 0; i < c.extra.length; i++) {
+      if (cp >= c.extra[i][0] && cp <= c.extra[i][1]) return true;
+    }
+    return false;
+  }
+
+  /** 当前字是否需要用回退字体绘制。 */
+  function usesFallback(o, ch) {
+    return !!(o.fontFam && o.fallbackCss && !hasGlyph(o.fontFam, ch));
+  }
 
   var state = {
     font: null,
@@ -184,7 +227,7 @@
   }
 
   // ---------------------------------------------------------------- 印章
-  function drawSeal(ctx, x, y, size, family, th) {
+  function drawSeal(ctx, x, y, size, o, th) {
     ctx.save();
     ctx.globalAlpha = 0.92;
     ctx.fillStyle = th.dot;
@@ -197,20 +240,24 @@
     // 阴文 2x2
     ctx.fillStyle = th.c1;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.font = (size * 0.38) + 'px ' + family;
     var chars = ['字', '体', '速', '转'];
     var cell = size * 0.44;
     for (var i = 0; i < 4; i++) {
       var cx = x + size * .28 + (i % 2) * cell;
       var cy = y + size * .28 + Math.floor(i / 2) * cell;
+      // 印章用字同样逐字检测：篆/隶字库缺「转」等字时自动补楷书
+      ctx.font = (size * 0.38) + 'px ' +
+        (usesFallback(o, chars[i]) ? o.fallbackCss : o.familyCss);
       ctx.fillText(chars[i], cx, cy);
     }
     ctx.restore();
   }
 
-  // ---------------------------------------------------------------- 单字绘制
-  function drawGlyph(ctx, ch, cx, cy, transform) {
+  // ------------------------------------------------- 单字绘制 / 测量（含缺字回退）
+  /** 绘制单个字。缺字时临时切换到回退字体，绘制后恢复，不影响后续排版。 */
+  function drawOne(ctx, ch, cx, cy, o, transform, size) {
     ctx.save();
+    if (usesFallback(o, ch)) ctx.font = (size || o.fontSize) + 'px ' + o.fallbackCss;
     if (transform === 'li') {
       ctx.translate(cx, cy); ctx.scale(1.12, 0.82); ctx.fillText(ch, 0, 0);
     } else if (transform === 'zhuan') {
@@ -219,6 +266,18 @@
       ctx.fillText(ch, cx, cy);
     }
     ctx.restore();
+  }
+
+  /** 按「实际用于绘制的字体」测量字宽，保证回退后字距依然匀称。 */
+  function measureOne(ctx, ch, o) {
+    if (usesFallback(o, ch)) {
+      ctx.save();
+      ctx.font = o.fontSize + 'px ' + o.fallbackCss;
+      var w = ctx.measureText(ch).width;
+      ctx.restore();
+      return w + o.letterSpacing;
+    }
+    return ctx.measureText(ch).width + o.letterSpacing;
   }
 
   // ---------------------------------------------------------------- 绘制一页
@@ -232,7 +291,8 @@
     var titleH = o.title && o.titleText ? fs * 1.9 : 0;
     var footerH = fs * 2.6;
     var lineH = fs * (o.vertical ? 1.16 : 1.78);
-    var letterSpacing = fs * (o.transform === 'li' ? 0.16 : 0.055);
+    var letterSpacing = o.letterSpacing != null
+      ? o.letterSpacing : fs * (o.transform === 'li' ? 0.16 : 0.055);
     var colW = fs * (o.vertical ? 1.62 : 0);
 
     var bodyH = o.vertical ? o.vertBodyH : part.length * lineH;
@@ -259,7 +319,7 @@
       var tx = o.vertical ? W - padX - tw / 2 - fs : (W - tw) / 2;
       tChars.forEach(function (c) {
         var w = ctx.measureText(c).width + fs * 0.16;
-        ctx.fillText(c, tx + w / 2, top + fs * 0.7);
+        drawOne(ctx, c, tx + w / 2, top + fs * 0.7, o, null, fs * 1.22);
         tx += w;
       });
       ctx.restore();
@@ -297,8 +357,8 @@
         var y = top + lineH * (i + 0.5);
         for (var j = 0; j < line.length; j++) {
           var ch = line[j];
-          var w = ctx.measureText(ch).width + letterSpacing;
-          drawGlyph(ctx, ch, x + w / 2, y, o.transform);
+          var w = measureOne(ctx, ch, o);
+          drawOne(ctx, ch, x + w / 2, y, o, o.transform);
           x += w;
         }
       }
@@ -315,10 +375,10 @@
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(Math.PI / 2);
-            ctx.fillText(cch, 0, 0);
+            drawOne(ctx, cch, 0, 0, o, null);
             ctx.restore();
           } else {
-            drawGlyph(ctx, cch, cx, cy, o.transform);
+            drawOne(ctx, cch, cx, cy, o, o.transform);
           }
         }
       }
@@ -333,11 +393,17 @@
     ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
     var signText = (o.sign || '') + (pageCount > 1 ? '  ·  ' + (pageIndex + 1) + '/' + pageCount : '');
     if (signText.trim()) {
+      // 落款里只要有一个缺字，就整体改用小楷书写，避免半行方框、风格更统一
+      var signFallback = false;
+      for (var si = 0; si < signText.length; si++) {
+        if (usesFallback(o, signText[si])) { signFallback = true; break; }
+      }
+      if (signFallback && o.fallbackCss) ctx.font = (fs * 0.42) + 'px ' + o.fallbackCss;
       ctx.fillText(signText, W - padX - (o.seal ? sealSize + 24 : 0), signY);
     }
     ctx.restore();
     if (o.seal) {
-      drawSeal(ctx, W - padX - sealSize, signY - sealSize * 0.22, sealSize, family, th);
+      drawSeal(ctx, W - padX - sealSize, signY - sealSize * 0.22, sealSize, o, th);
     }
 
     return cv.toDataURL('image/png');
@@ -400,9 +466,10 @@
     all.forEach(function (f) {
       var ok = fontAvailable(f);
       var card = el('div', 'font-card' + (state.font && state.font.id === f.id ? ' on' : '') + (ok ? '' : ' off') + (f.user ? ' user' : ''));
-      var badge = f.user ? '自有' : (f.real ? '开源' : '风格');
+      var badge = f.user ? '自有' : (f.src === 'seal' ? '印章' : (f.real ? '开源' : '风格'));
+      var badgeCls = f.src === 'seal' ? ' seal' : '';
       card.innerHTML =
-        '<span class="font-badge">' + badge + '</span>' +
+        '<span class="font-badge' + badgeCls + '">' + badge + '</span>' +
         '<div class="font-sample ' + (f.cls || '') + '" style="' + (f.inline || '') + '">' +
           (f.sample || '永') + '</div>' +
         '<div class="font-name">' + f.name + '</div>' +
@@ -417,7 +484,7 @@
     var missing = BUILTIN.filter(function (f) { return !fontAvailable(f); }).length;
     $('fontNotice').textContent = missing
       ? '有 ' + missing + ' 款字体在当前安装包中不可用，已置灰。'
-      : '共 ' + all.length + ' 款可选。带「风格」标记的是版式模拟效果，非真篆/隶字库；点右上角「＋ 我的字体」可导入你拥有授权的字体。';
+      : '共 ' + all.length + ' 款可选。「印章」角标的三款（真隶书 / 真篆书 / 庆科黄油）融合自开源项目「百变印章」，缺字自动用楷书补齐；「风格」为版式模拟效果。';
   }
 
   function selectFont(f) {
@@ -457,7 +524,7 @@
     return false;
   };
 
-  function showPages(pages) {
+  function showPages(pages, missChars) {
     var box = $('resultScroll');
     box.innerHTML = '';
     pages.forEach(function (url, i) {
@@ -467,8 +534,10 @@
       img.setAttribute('alt', '书法作品第 ' + (i + 1) + ' 页');
       box.appendChild(img);
     });
-    $('resultInfo').textContent = '共 ' + pages.length + ' 张 · 1080px 高清';
-    $('saveHint').textContent = '点下方按钮，全部图片会一次性保存到系统相册的「字体速转」文件夹。';
+    $('resultInfo').textContent = '共 ' + pages.length + ' 张 · 1080px 高清' +
+      (missChars ? ' · ' + missChars + ' 字以楷书补齐' : '');
+    $('saveHint').textContent = '点下方按钮，全部图片会一次性保存到系统相册的「字体速转」文件夹。' +
+      (missChars ? '（本次有 ' + missChars + ' 个字该字库没有，已自动用楷书补齐，整篇无方框）' : '');
     $('btnSaveAll').disabled = false;
   }
 
@@ -480,17 +549,40 @@
 
     state.baseName = text.replace(/[\n\r]/g, '').slice(0, 8) || '字体速转';
     var size = state.size > 0 ? Math.round(40 + state.size * 1.0) : autoSize(text.length);
+    var fam = state.font.family;
+    var signText = $('signInput').value.trim();
+    var titleText = $('titleInput').value.trim();
+
+    // 融合自「百变印章」的字库收字有限：先统计缺字，并预加载楷书作为回退字库。
+    // 逐字检测依赖构建期生成的 cmap 位图（window.FONT_COVERAGE）。
+    var needFallback = !!COVERAGE[fam];
+    var fallbackCss = needFallback
+      ? await ensureFont('FS-Kai', text + signText + titleText + '字体速转永和风月山水') : null;
+    var missChars = 0;
+    if (needFallback) {
+      var probe = Array.from(text + signText + titleText);
+      for (var mi = 0; mi < probe.length; mi++) {
+        var pc = probe[mi];
+        // 标点 / 空白不计入「补了几个字」，让用户看到的是有实际意义的字数
+        if (!/[\u3400-\u9FFFA-Za-z0-9]/.test(pc)) continue;
+        if (!hasGlyph(fam, pc)) missChars++;
+      }
+    }
+
     var o = {
-      familyCss: await ensureFont(state.font.family, text),
+      familyCss: await ensureFont(fam, text),
+      fontFam: needFallback ? fam : null,
+      fallbackCss: fallbackCss,
       fontSize: size,
+      letterSpacing: size * (state.font.transform === 'li' ? 0.16 : 0.055),
       paper: state.paper,
       vertical: state.vertical,
       transform: state.font.transform || null,
-      sign: $('signInput').value.trim(),
+      sign: signText,
       seal: $('optSeal').checked,
       grid: $('optGrid').checked,
       title: $('optTitle').checked,
-      titleText: $('titleInput').value.trim()
+      titleText: titleText
     };
 
     showResult();
@@ -502,7 +594,7 @@
     try {
       state.pages = renderPages(text, o);
       if (!state.pages.length) throw new Error('未生成任何页面');
-      showPages(state.pages);
+      showPages(state.pages, missChars);
     } catch (e) {
       $('resultInfo').textContent = '生成失败';
       toast('生成失败：' + e.message);

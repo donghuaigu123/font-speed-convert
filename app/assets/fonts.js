@@ -5,5 +5,8 @@ window.FONT_FILES = {
   "MaShanZheng.ttf": 1,
   "ZCOOLKuaiLe.ttf": 1,
   "ZCOOLXiaoWei.ttf": 1,
-  "ZhiMangXing.ttf": 1
+  "ZhiMangXing.ttf": 1,
+  "heiti.ttf": 1,
+  "lishu.ttf": 1,
+  "zhuanshu.ttf": 1
 };

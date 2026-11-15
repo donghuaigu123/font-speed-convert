@@ -167,11 +167,22 @@ input[type=range]{width:100%;accent-color:var(--red);margin:2px 0 4px}
 @font-face{font-family:FS-XingKai;src:url('fonts/LongCang.ttf')}
 @font-face{font-family:FS-WeiBei;src:url('fonts/ZCOOLXiaoWei.ttf')}
 @font-face{font-family:FS-KuaiLe;src:url('fonts/ZCOOLKuaiLe.ttf')}
+/* 融合自开源项目「百变印章」的三款字库 */
+@font-face{font-family:FS-Lishu;src:url('fonts/lishu.ttf')}
+@font-face{font-family:FS-Zhuan;src:url('fonts/zhuanshu.ttf')}
+@font-face{font-family:FS-HuangYou;src:url('fonts/heiti.ttf')}
 .f-kai{font-family:FS-Kai,serif}
 .f-xing{font-family:FS-Xing,serif}
 .f-cao{font-family:FS-Cao,serif}
 .f-xingkai{font-family:FS-XingKai,serif}
 .f-weibei{font-family:FS-WeiBei,serif}
 .f-kuaile{font-family:FS-KuaiLe,serif}
+.f-lishu{font-family:FS-Lishu,serif}
+.f-zhuan{font-family:FS-Zhuan,serif}
+.f-huangyou{font-family:FS-HuangYou,sans-serif}
 .f-song{font-family:serif}
 .f-hei{font-family:sans-serif}
+
+/* 「印章」来源角标，区别于普通开源字体 */
+.font-card .font-badge.seal{background:#8b3a2f;color:#fff4e2}
+
