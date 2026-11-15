@@ -6,7 +6,12 @@
 
 一款完全离线、零广告、零联网权限的 Android 应用。输入或粘贴文字 → 挑一款字体 → 点生成 → 保存到相册，四步完成。长文章会自动换行、自动分页，整篇始终使用同一种字体，风格统一协调。
 
-📦 **[下载安装包：字体速转-v1.0.apk](./字体速转-v1.0.apk)**（Android 6.0 / API 23 及以上）
+📦 **下载安装包**（Android 6.0 / API 23 及以上）：
+
+- 仓库内：[字体速转-v1.0.apk](./字体速转-v1.0.apk)
+- GitHub Release：[FontSpeedConvert-v1.0.apk](https://github.com/donghuaigu123/font-speed-convert/releases/download/v1.0/FontSpeedConvert-v1.0.apk)
+
+安装时需要允许「未知来源」。安装包已用 v1/v2/v3 三重签名，完全离线运行。
 
 ---
 
@@ -75,7 +80,7 @@ aapt2 compile → aapt2 link(含 assets/字体) → javac → d8 → 组装 dex 
 
 ## 技术架构
 
-- 原生层：`MainActivity.java` 是一个 WebView 壳。它通过 `shouldInterceptRequest` 拦截 `file:///android_asset/` 请求并补上 CORS 头——这一步很关键，否则 Chromium 会把本地 `@font-face` 判为跨域资源并**污染 canvas**，导致 `toDataURL` 无法导出图片。
+- 原生层：`MainActivity.java` 是一个 WebView 壳。它把页面、CSS、JS 和字体全部映射到同一个**虚拟 HTTPS 源** `https://appassets.fontconvert.local/`，由 `shouldInterceptRequest` 从本地 assets 返回（相当于手写的 WebViewAssetLoader）。这一步很关键：`file://` 协议下 Chromium 会把本地 `@font-face` 判为跨域资源并**污染 canvas**，导致 `toDataURL` 无法导出图片；同源 HTTPS 方案彻底规避了这个坑，且不产生任何真实网络请求。
 - 保存层：图片以 base64 **分块**回传给原生层（`beginImage` / `appendImage` / `finishImage`），规避 JS 单次传超大字符串的限制；Android 10+ 用 MediaStore 写相册，Android 9 及以下用公共目录 + 媒体扫描。
 - 渲染层：`app/assets/app.js` 用 Canvas 完成全部排版（自动字号、换行避头尾、分页、纸纹、界格、落款、印章），输出 1080px 宽 PNG。
 - 全部逻辑离线，`AndroidManifest.xml` 未声明 INTERNET 权限。

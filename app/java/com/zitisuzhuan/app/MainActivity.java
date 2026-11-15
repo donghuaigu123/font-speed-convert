@@ -41,9 +41,9 @@ import java.util.Map;
  * 字体速转 —— 纯离线 WebView 壳。
  *
  * 设计要点：
- * 1. 所有 assets（含字体）通过 shouldInterceptRequest 返回，并附带 CORS 头，
- *    否则 file:// 下的 @font-face 会被 Chromium 判定为跨域，
- *    进而污染 canvas，导致 toDataURL 无法导出图片。
+ * 1. 页面与字体都映射到同一个虚拟 HTTPS 源，由 shouldInterceptRequest 从本地
+ *    assets 返回。@font-face 与页面严格同源，canvas 不会被跨域字体污染，
+ *    toDataURL 一定能导出图片（file:// 方案在部分 WebView 上会失败）。
  * 2. 图片以 base64 分块回传，规避 JavascriptInterface 单次传大字符串的限制。
  * 3. 支持导入用户自有 TTF/OTF 字体，用于扩展隶书、篆书或名家字体。
  */
@@ -51,6 +51,8 @@ public class MainActivity extends Activity {
 
     private static final int REQ_PICK_FONT = 1001;
     private static final int REQ_STORAGE = 1002;
+    private static final String APP_HOST = "appassets.fontconvert.local";
+    private static final String APP_ORIGIN = "https://" + APP_HOST + "/";
 
     private WebView web;
     private final ByteArrayOutputStream imageBuffer = new ByteArrayOutputStream();
@@ -70,10 +72,8 @@ public class MainActivity extends Activity {
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
-        s.setAllowFileAccess(true);
-        s.setAllowContentAccess(true);
-        s.setAllowFileAccessFromFileURLs(true);
-        s.setAllowUniversalAccessFromFileURLs(true);
+        s.setAllowFileAccess(false);
+        s.setAllowContentAccess(false);
         s.setDefaultTextEncodingName("UTF-8");
         s.setCacheMode(WebSettings.LOAD_NO_CACHE);
         s.setUseWideViewPort(true);
@@ -100,8 +100,9 @@ public class MainActivity extends Activity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest req) {
-                // 应用完全离线，屏蔽一切外部跳转
-                return true;
+                // 应用完全离线：只允许虚拟源内部导航，屏蔽一切外部跳转
+                Uri u = req.getUrl();
+                return u == null || !APP_HOST.equals(u.getHost());
             }
         });
 
@@ -112,15 +113,27 @@ public class MainActivity extends Activity {
             }
         });
 
-        web.loadUrl("file:///android_asset/index.html");
+        web.loadUrl(APP_ORIGIN + "index.html");
     }
 
-    /** 拦截 file:///android_asset/ 请求，统一补 CORS 头。 */
+    /**
+     * 把本地 assets 映射到虚拟 HTTPS 源（WebViewAssetLoader 的轻量手写实现）。
+     * 页面、CSS、JS、字体全部同源，canvas 不会被污染，图片导出稳定可靠。
+     */
     private WebResourceResponse assetResponse(Uri uri) {
-        if (uri == null || !"file".equals(uri.getScheme())) return null;
-        String path = uri.getPath();
-        if (path == null || !path.startsWith("/android_asset/")) return null;
-        String rel = path.substring("/android_asset/".length());
+        if (uri == null) return null;
+        String rel = null;
+        String scheme = uri.getScheme();
+        if ("https".equals(scheme) && APP_HOST.equals(uri.getHost())) {
+            String path = uri.getPath();
+            if (path != null) rel = path.startsWith("/") ? path.substring(1) : path;
+        } else if ("file".equals(scheme)) {
+            // 兼容旧 WebView 的 file:// 回退路径
+            String path = uri.getPath();
+            if (path != null && path.startsWith("/android_asset/"))
+                rel = path.substring("/android_asset/".length());
+        }
+        if (rel == null) return null;
         int q = rel.indexOf('?');
         if (q >= 0) rel = rel.substring(0, q);
         if (rel.isEmpty()) rel = "index.html";
